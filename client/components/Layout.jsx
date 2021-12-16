@@ -20,3 +20,5 @@ const Layout = () => {
     );
     return <>{nav()}</>;
 };
+
+export default Layout;
