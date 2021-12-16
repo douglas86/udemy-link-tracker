@@ -1,4 +1,4 @@
-const Layout = (props) => {
+const Layout = ({ children }) => {
     const nav = () => (
         <ul className="nav">
             <li className="nav-item">
@@ -20,7 +20,7 @@ const Layout = (props) => {
     );
     return (
         <>
-            {nav()} {props.children}
+            {nav()} {children}
         </>
     );
 };
