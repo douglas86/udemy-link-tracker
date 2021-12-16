@@ -2,13 +2,19 @@ const Layout = () => {
     const nav = () => (
         <ul className="nav">
             <li className="nav-item">
-                <a href="">Home</a>
+                <a className="nav-link" href="">
+                    Home
+                </a>
             </li>
             <li className="nav-item">
-                <a href="">Login</a>
+                <a className="nav-link" href="">
+                    Login
+                </a>
             </li>
             <li className="nav-item">
-                <a href="">Register</a>
+                <a className="nav-link" href="">
+                    Register
+                </a>
             </li>
         </ul>
     );
