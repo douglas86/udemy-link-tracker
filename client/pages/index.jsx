@@ -1,5 +1,7 @@
+import Layout from '../components/Layout';
+
 const Home = () => {
-    return <div>Hello next</div>;
+    return <Layout>Hello next</Layout>;
 };
 
 export default Home;
