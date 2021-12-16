@@ -1,4 +1,4 @@
-const Layout = () => {
+const Layout = (props) => {
     const nav = () => (
         <ul className="nav">
             <li className="nav-item">
@@ -18,7 +18,11 @@ const Layout = () => {
             </li>
         </ul>
     );
-    return <>{nav()}</>;
+    return (
+        <>
+            {nav()} {props.children}
+        </>
+    );
 };
 
 export default Layout;
