@@ -1,5 +1,3 @@
 export const register = (req, res) => {
-    res.json({
-        data: 'you hit an endpoint middleware ... using controllers',
-    });
+    console.log('REGISTER CONTROLLER', req.body);
 };
