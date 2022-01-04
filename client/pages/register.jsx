@@ -1,6 +1,6 @@
 const Register = () => (
     <>
-        <h1>This is the login page</h1>
+        <h1>This is the register page</h1>
     </>
 );
 
