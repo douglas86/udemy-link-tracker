@@ -22,6 +22,11 @@ app.get('/api/register', (req, res) => {
 
 const PORT = process.env.PORT;
 
+mongoose
+    .connect(process.env.DATABASE_CLOUD)
+    .then(() => console.log('DB connected'))
+    .catch((err) => console.log(err));
+
 app.listen(PORT, () => {
     console.log(`Server listening on port ${PORT}`);
 });
