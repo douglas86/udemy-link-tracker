@@ -1,5 +1,6 @@
 import AWS from 'aws-sdk';
 import jwt from 'jsonwebtoken';
+import { registerEmailParams } from '../helpers/email';
 
 import User from '../models/user';
 
@@ -37,40 +38,21 @@ export const register = (req, res) => {
         );
 
         // send email
-        const params = {
-            Source: process.env.EMAIL_FROM,
-            Destination: {
-                ToAddresses: [email],
-            },
-            ReplyToAddresses: [process.env.EMAIL_TO],
-            Message: {
-                Body: {
-                    Html: {
-                        Charset: 'UTF-8',
-                        Data: `
-                        <html>
-                            <h1 style="color: red;">Verify your email address</h1>
-                            <p>Please use the following link to complete your registration:</p>
-                            <p>${process.env.CLIENT_URL}/auth/activate/${token}</p>
-                        </html>
-                        `,
-                    },
-                },
-                Subject: {
-                    Charset: 'UTF-8',
-                    Data: 'Complete your registration',
-                },
-            },
-        };
+        const params = registerEmailParams(email, token);
+
         const sendEmailOnRegister = ses.sendEmail(params).promise();
         sendEmailOnRegister
             .then((data) => {
                 console.log('email submitted to SES', data);
-                res.send('Email sent');
+                res.json({
+                    message: `Email has been sent to ${email}, Follow the instruction to complete your registration`,
+                });
             })
             .catch((err) => {
                 console.log('ses email on register', err);
-                res.send('email failed');
+                res.json({
+                    error: `We could not verify your email, Please try again`,
+                });
             });
     });
 };
