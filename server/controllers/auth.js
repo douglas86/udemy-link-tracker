@@ -1,5 +1,7 @@
 import AWS from 'aws-sdk';
 
+import User from '../models/user';
+
 require('dotenv').config();
 
 AWS.config.update({
@@ -15,6 +17,9 @@ const ses = new AWS.SES({
 export const register = (req, res) => {
     // console.log('REGISTER CONTROLLER', req.body);
     const { name, email, password } = req.body;
+
+    // check if user exists in our db
+
     const params = {
         Source: process.env.EMAIL_FROM,
         Destination: {
