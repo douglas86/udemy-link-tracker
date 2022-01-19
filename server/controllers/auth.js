@@ -51,7 +51,7 @@ export const register = (req, res) => {
             .catch((err) => {
                 console.log('ses email on register', err);
                 res.json({
-                    error: `We could not verify your email, Please try again`,
+                    message: `We could not verify your email, Please try again`,
                 });
             });
     });

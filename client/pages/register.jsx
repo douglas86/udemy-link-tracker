@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import styles from '../public/static/css/register.module.css';
 import axios from 'axios';
+import { showSuccessMessage, showErrorMessage } from '../helpers/alerts';
 
 const Register = () => {
     const [state, setState] = useState({
@@ -24,18 +25,47 @@ const Register = () => {
 
     const { name, email, password, error, success, buttonText } = state;
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        console.table({ name, email, password });
-        axios
-            .post(`http://localhost:8000/api/register`, {
-                name,
-                email,
-                password,
-            })
-            .then((res) => console.log(res))
-            .catch((err) => console.log(err));
+        setState({ ...state, buttonText: 'Registering' });
+        try {
+            const response = await axios
+                .post(`http://localhost:8000/api/register`, {
+                    name,
+                    email,
+                    password,
+                })
+                .then((res) => {
+                    console.log(res);
+                    setState({
+                        ...state,
+                        name: '',
+                        email: '',
+                        password: '',
+                        buttonText: 'Submitted',
+                        success: res.data.message,
+                    });
+                });
+        } catch (err) {
+            console.log(err);
+            setState({
+                ...state,
+                buttonText: 'Register',
+                error: err.res.data.error,
+            });
+        }
     };
+
+    // const handleSubmit = (e) => {
+    //     e.preventDefault();
+    //     setState({ ...state, buttonText: 'Registering' });
+    //     console.table({ name, email, password });
+
+    //         })
+    //         .catch((err) => {
+
+    //         });
+    // };
 
     const registerForm = () => (
         <form onSubmit={handleSubmit}>
@@ -78,9 +108,9 @@ const Register = () => {
             <div className="col-md-6 offset-3">
                 <h1>Register</h1>
                 <br />
+                {success && showSuccessMessage(success)}
+                {error && showErrorMessage(error)}
                 {registerForm()}
-                <hr />
-                {JSON.stringify(state)}
             </div>
         </>
     );
