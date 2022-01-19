@@ -30,13 +30,12 @@ const Register = () => {
         setState({ ...state, buttonText: 'Registering' });
         try {
             const response = await axios
-                .post(`http://localhost:8000/api/register`, {
+                .post(`${process.env.NEXT_PUBLIC_API}/register`, {
                     name,
                     email,
                     password,
                 })
                 .then((res) => {
-                    console.log(res);
                     setState({
                         ...state,
                         name: '',
@@ -47,7 +46,6 @@ const Register = () => {
                     });
                 });
         } catch (err) {
-            console.log(err);
             setState({
                 ...state,
                 buttonText: 'Register',
