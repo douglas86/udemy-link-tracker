@@ -5,9 +5,9 @@ import { showSuccessMessage, showErrorMessage } from '../helpers/alerts';
 
 const Register = () => {
     const [state, setState] = useState({
-        name: '',
-        email: '',
-        password: '',
+        name: 'Ryan',
+        email: 'ryan@gmail.com',
+        password: '123456',
         error: '',
         success: '',
         buttonText: 'Register',
@@ -28,42 +28,30 @@ const Register = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         setState({ ...state, buttonText: 'Registering' });
-        try {
-            const response = await axios
-                .post(`${process.env.NEXT_PUBLIC_API}/register`, {
-                    name,
-                    email,
-                    password,
-                })
-                .then((res) => {
-                    setState({
-                        ...state,
-                        name: '',
-                        email: '',
-                        password: '',
-                        buttonText: 'Submitted',
-                        success: res.data.message,
-                    });
+        const response = await axios
+            .post(`${process.env.NEXT_PUBLIC_API}/register`, {
+                name,
+                email,
+                password,
+            })
+            .then((res) => {
+                setState({
+                    ...state,
+                    name: '',
+                    email: '',
+                    password: '',
+                    buttonText: 'Submitted',
+                    success: res.data.message,
                 });
-        } catch (err) {
-            setState({
-                ...state,
-                buttonText: 'Register',
-                error: err.res.data.error,
+            })
+            .catch((err) => {
+                setState({
+                    ...state,
+                    buttonText: 'Register',
+                    error: err.response.data.error,
+                });
             });
-        }
     };
-
-    // const handleSubmit = (e) => {
-    //     e.preventDefault();
-    //     setState({ ...state, buttonText: 'Registering' });
-    //     console.table({ name, email, password });
-
-    //         })
-    //         .catch((err) => {
-
-    //         });
-    // };
 
     const registerForm = () => (
         <form onSubmit={handleSubmit}>
@@ -83,6 +71,7 @@ const Register = () => {
                     onChange={handleChange('email')}
                     className="form-control"
                     placeholder="Type your email"
+                    required
                 />
             </div>
             <div className={`${styles.form_group} form-group`}>
@@ -92,6 +81,7 @@ const Register = () => {
                     onChange={handleChange('password')}
                     className="form-control"
                     placeholder="Type your password"
+                    required
                 />
             </div>
             <div className={`${styles.form_group} form-group`}>
