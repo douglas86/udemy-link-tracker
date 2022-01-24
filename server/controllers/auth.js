@@ -56,3 +56,9 @@ export const register = (req, res) => {
             });
     });
 };
+
+export const registerActivated = (req, res) => {
+    const { token } = req.body;
+    console.log('body', req);
+    console.log('token', token);
+};
