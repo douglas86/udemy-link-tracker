@@ -1,5 +1,6 @@
 import AWS from 'aws-sdk';
 import jwt from 'jsonwebtoken';
+import shortId from 'shortid';
 import { registerEmailParams } from '../helpers/email';
 
 import User from '../models/user';
@@ -61,4 +62,33 @@ export const registerActivated = (req, res) => {
     const { token } = req.body;
     console.log('body', req);
     console.log('token', token);
+    jwt.verify(token, process.env.JWT_ACCOUNT_ACTIVATION, (err, decoded) => {
+        if (err) {
+            return res.status(401).json({
+                error: 'Expired link. Try again',
+            });
+        }
+        const { name, email, password } = jwt.decode(token);
+        const username = shortId.generate();
+
+        User.findOne({ email }).exec((err, user) => {
+            if (user) {
+                return res.status(401).json({
+                    error: 'Email is taken',
+                });
+            }
+            // register new user
+            const newUser = new User({ username, name, email, password });
+            newUser.save((err, user) => {
+                if (err) {
+                    return res.status(401).json({
+                        error: 'Error saving user in database, try later.',
+                    });
+                }
+                return res.json({
+                    message: 'Registration success. Please login.',
+                });
+            });
+        });
+    });
 };

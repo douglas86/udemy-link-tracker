@@ -14,11 +14,11 @@ app.use(cors({ origin: process.env.CLIENT_URL }));
 app.use(express.json());
 app.use('/api', authRoutes);
 
-app.get('/api/register', (req, res) => {
-    res.json({
-        data: 'you hit register endpoint',
-    });
-});
+// app.get('/api/register', (req, res) => {
+//     res.json({
+//         data: 'you hit register endpoint',
+//     });
+// });
 
 const PORT = process.env.PORT;
 
