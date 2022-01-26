@@ -4,6 +4,7 @@ import Router from 'next/router';
 import styles from '../public/static/css/register.module.css';
 import axios from 'axios';
 import { showSuccessMessage, showErrorMessage } from '../helpers/alerts';
+import { authenticate } from '../helpers/auth';
 
 const Login = () => {
     const [state, setState] = useState({
@@ -37,7 +38,8 @@ const Login = () => {
                     password,
                 }
             );
-            console.log('res', response); // data > token / user
+            // console.log('res', response); // data > token / user
+            authenticate(response, () => Router.push('/'));
         } catch (err) {
             setState({
                 ...state,
