@@ -37,7 +37,7 @@ const Login = () => {
                     password,
                 }
             );
-            console.log('res', response);
+            console.log('res', response); // data > token / user
         } catch (err) {
             setState({
                 ...state,
