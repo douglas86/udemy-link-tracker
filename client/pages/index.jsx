@@ -1,11 +1,9 @@
-import Layout from '../components/Layout';
-
-const Home = () => {
+const Admin = () => {
     return (
         <>
-            <h1>Hello next</h1>
+            <h1>Hello Admin</h1>
         </>
     );
 };
 
-export default Home;
+export default Admin;

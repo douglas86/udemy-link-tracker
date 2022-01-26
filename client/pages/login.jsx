@@ -4,7 +4,7 @@ import Router from 'next/router';
 import styles from '../public/static/css/register.module.css';
 import axios from 'axios';
 import { showSuccessMessage, showErrorMessage } from '../helpers/alerts';
-import { authenticate } from '../helpers/auth';
+import { authenticate, isAuth } from '../helpers/auth';
 
 const Login = () => {
     const [state, setState] = useState({
@@ -25,6 +25,10 @@ const Login = () => {
         });
     };
 
+    useEffect(() => {
+        isAuth() && Router.push('/');
+    }, []);
+
     const { email, password, error, success, buttonText } = state;
 
     const handleSubmit = async (e) => {
@@ -39,7 +43,11 @@ const Login = () => {
                 }
             );
             // console.log('res', response); // data > token / user
-            authenticate(response, () => Router.push('/'));
+            authenticate(response, () =>
+                isAuth() && isAuth().role === 'admin'
+                    ? Router.push('/admin')
+                    : Router.push('/user')
+            );
         } catch (err) {
             setState({
                 ...state,
