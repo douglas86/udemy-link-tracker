@@ -7,3 +7,10 @@ export const userRegisterValidator = [
         .isLength({ min: 6 })
         .withMessage('Password must be atleast 6 characters long'),
 ];
+
+export const userLoginValidator = [
+    check('email').isEmail().withMessage('Must be a valid email address'),
+    check('password')
+        .isLength({ min: 6 })
+        .withMessage('Password must be atleast 6 characters long'),
+];
