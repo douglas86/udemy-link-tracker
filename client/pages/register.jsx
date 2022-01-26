@@ -5,9 +5,9 @@ import { showSuccessMessage, showErrorMessage } from '../helpers/alerts';
 
 const Register = () => {
     const [state, setState] = useState({
-        name: 'Douglas',
-        email: 'douglasmaxton@gmail.com',
-        password: '123456',
+        name: '',
+        email: '',
+        password: '',
         error: '',
         success: '',
         buttonText: 'Register',
