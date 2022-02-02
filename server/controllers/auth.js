@@ -1,5 +1,6 @@
 import AWS from 'aws-sdk';
 import jwt from 'jsonwebtoken';
+import expressJwt from 'express-jwt';
 import shortId from 'shortid';
 import { registerEmailParams } from '../helpers/email';
 
@@ -121,3 +122,8 @@ export const login = (req, res) => {
         });
     });
 };
+
+export const requireSignIn = expressJwt({
+    secret: process.env.JWT_SECRET,
+    algorithms: ['RS256'],
+});
