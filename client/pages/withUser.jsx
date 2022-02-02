@@ -27,10 +27,10 @@ const withUser = (Page) => {
 
         if (user === null) {
             // redirect
-            context.response.writeHead(302, {
+            context.res.writeHead(302, {
                 Location: '/',
             });
-            context.response.end();
+            context.res.end();
         } else {
             return {
                 ...(Page.getInitialProps
