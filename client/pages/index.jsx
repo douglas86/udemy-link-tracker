@@ -1,9 +1,9 @@
-const Admin = () => {
+const Home = () => {
     return (
         <>
-            <h1>Hello Admin</h1>
+            <h1>You are on the home page</h1>
         </>
     );
 };
 
-export default Admin;
+export default Home;
