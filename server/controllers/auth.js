@@ -126,7 +126,7 @@ export const login = (req, res) => {
 // req.user
 export const requireSignIn = expressJwt({
     secret: process.env.JWT_SECRET,
-    algorithms: ['RS256'],
+    algorithms: ['HS256'],
 });
 
 export const authMiddleWare = (req, res, next) => {
