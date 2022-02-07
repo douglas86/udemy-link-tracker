@@ -1,9 +1,7 @@
-import Layout from '../components/Layout';
-
 const Home = () => {
     return (
         <>
-            <h1>Hello next</h1>
+            <h1>You are on the home page</h1>
         </>
     );
 };
