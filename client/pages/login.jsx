@@ -89,11 +89,14 @@ const Login = () => {
     return (
         <>
             <div className="col-md-6 offset-3">
-                <h1>Login</h1>
+                <h1 className='float-right'>Login</h1>
                 <br />
                 {success && showSuccessMessage(success)}
                 {error && showErrorMessage(error)}
                 {LoginForm()}
+                <Link href="/auth/password/forget">
+                    <a className="text-danger float-end">Forget Password</a>
+                </Link>
             </div>
         </>
     );
