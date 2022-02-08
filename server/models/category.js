@@ -1,4 +1,4 @@
-import mongoose, { isValidObjectId } from 'mongoose';
+import mongoose from 'mongoose';
 
 const categorySchema = new mongoose.Schema(
     {
