@@ -22,6 +22,7 @@
     "lodash": "^4.17.21",
     "mongoose": "^6.1.5",
     "nodemon": "^2.0.15",
-    "shortid": "^2.2.16"
+    "shortid": "^2.2.16",
+    "slugify": "^1.6.5"
   }
 }
