@@ -14,14 +14,7 @@ import { requireSignIn, adminMiddleWare } from '../controllers/auth';
 import { create, list, read, update, remove } from '../controllers/category';
 
 // routes
-router.post(
-    '/category',
-    categoryCreateValidator,
-    runValidation,
-    requireSignIn,
-    adminMiddleWare,
-    create
-);
+router.post('/category', requireSignIn, adminMiddleWare, create);
 router.get('/categories', list);
 router.get('/category/:slug', read);
 router.put(
