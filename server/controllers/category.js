@@ -83,6 +83,14 @@ export const create = (req, res) => {
 
 export const list = (req, res) => {
     //
+    Category.find({}).exec((err, data) => {
+        if (err) {
+            return res.status(400).json({
+                error: 'Categories could not load',
+            });
+        }
+        res.json(data);
+    });
 };
 
 export const read = (req, res) => {
