@@ -49,13 +49,41 @@ const Create = () => {
     setState({ ...state, url: e.target.value, error: "", success: "" });
   };
 
+  const handleToggle = (c) => () => {
+    // return the first index -1
+    const clickedCatagory = categories.indexOf(c);
+    const all = [...categories];
+    if (clickedCatagory === -1) {
+      all.push(c);
+    } else {
+      all.splice(clickedCatagory, 1);
+    }
+    console.log("all >> categories", all);
+    setState({ ...state, categories: all, success: "", error: "" });
+  };
+
+  // show categories checkbox
+  const showCategories = () => {
+    return (
+      loadedCategories &&
+      loadedCategories.map((c, i) => (
+        <li className="list-unstyled" key={c._id}>
+          <input
+            type="checkbox"
+            onChange={handleToggle(c._id)}
+            className="mr-2"
+          />
+          <label className="form-check-label">{c.name}</label>
+        </li>
+      ))
+    );
+  };
+
   // link create form
   const submitLinkForm = () => (
     <form onSubmit={handleSubmit}>
       <div className="form-group">
-        <label className="text-muted" htmlFor="">
-          Title
-        </label>
+        <label className="text-muted">Title</label>
         <input
           type="text"
           className="form-control"
@@ -64,9 +92,7 @@ const Create = () => {
         />
       </div>
       <div className="form-group">
-        <label className="text-muted" htmlFor="">
-          URL
-        </label>
+        <label className="text-muted">URL</label>
         <input
           type="text"
           className="form-control"
@@ -87,9 +113,17 @@ const Create = () => {
         <br />
       </div>
       <div className="row">
-        <div className="col-md-4">xxx</div>
+        <div className="col-md-4">
+          <div className="form-group">
+            <label className="text-muted ml-4">Categories</label>
+            <ul style={{ maxHeight: "100px", overflowY: "scroll" }}>
+              {showCategories()}
+            </ul>
+          </div>
+        </div>
         <div className="col-md-8">{submitLinkForm()}</div>
       </div>
+      {JSON.stringify(categories)}
     </div>
   );
 };
