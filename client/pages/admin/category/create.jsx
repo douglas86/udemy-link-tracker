@@ -1,24 +1,27 @@
+import dynamic from "next/dynamic";
 import { useState, useEffect } from "react";
 import axios from "axios";
 import Resizer from "react-image-file-resizer";
 import withAdmin from "../../withAdmin";
 import { showSuccessMessage, showErrorMessage } from "../../../helpers/alerts";
+import "react-quill/dist/quill.bubble.css";
+
+const ReactQuill = dynamic(() => import("react-quill"), { ssr: false });
 
 const Create = ({ user, token }) => {
   const [state, setState] = useState({
     name: "",
-    content: "",
     error: "",
     success: "",
     buttonText: "Create",
     image: "",
   });
+  const [content, setContent] = useState("");
 
   const [imageUploadButtonName, setImageUploadButtonName] =
     useState("Upload image");
 
-  const { name, content, error, success, buttonText, imageUploadText, image } =
-    state;
+  const { name, error, success, buttonText, imageUploadText, image } = state;
 
   const handleChange = (name) => (e) => {
     setState({
@@ -27,6 +30,11 @@ const Create = ({ user, token }) => {
       error: "",
       success: "",
     });
+  };
+
+  const handleContent = (e) => {
+    setContent(e);
+    setState({ ...state, success: "", error: "" });
   };
 
   const handleImage = (event) => {
@@ -72,6 +80,7 @@ const Create = ({ user, token }) => {
       );
       console.log("category create response", response);
       setImageUploadButtonName("Upload image");
+      setContent("");
       setState({
         ...state,
         name: "",
@@ -105,11 +114,13 @@ const Create = ({ user, token }) => {
       </div>
       <div className="form-group">
         <label className="text-muted">Content</label>
-        <textarea
-          onChange={handleChange("content")}
+        <ReactQuill
           value={content}
-          className="form-control"
-          required
+          onChange={handleContent}
+          placeholder="Write something..."
+          theme="bubble"
+          className="pb-5 mb-3"
+          style={{ border: "1px solid #666" }}
         />
       </div>
       <div className="form-group">

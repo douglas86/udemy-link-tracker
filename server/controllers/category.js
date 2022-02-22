@@ -21,7 +21,6 @@ export const create = (req, res) => {
   );
   const type = image.split(";")[0].split("/")[1];
 
-
   const slug = slugify(name);
   let category = new Category({ name, content, slug });
 
@@ -40,6 +39,8 @@ export const create = (req, res) => {
     console.log("aws upload res data", data);
     category.image.url = data.Location;
     category.image.key = data.Key;
+    // posted by
+    category.postedBy = req.user._id;
 
     // save to db
     category.save((err, success) => {
