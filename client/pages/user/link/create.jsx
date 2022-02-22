@@ -2,8 +2,9 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
 import { showSuccessMessage, showErrorMessage } from "../../../helpers/alerts";
+import { getCookie, isAuth } from "../../../helpers/auth";
 
-const Create = () => {
+const Create = ({ token }) => {
   // state
   const [state, setState] = useState({
     title: "",
@@ -39,7 +40,32 @@ const Create = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.table({ title, url, categories, type, medium });
+    // console.table({ title, url, categories, type, medium });
+    try {
+      const response = await axios.post(
+        `${process.env.NEXT_PUBLIC_API}/link`,
+        { title, url, categories, type, medium },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      setState({
+        ...state,
+        title: "",
+        url: "",
+        success: "Link is created",
+        error: "",
+        loadedCategories: [],
+        categories: [],
+        type: "",
+        medium: "",
+      });
+    } catch (err) {
+      console.log("Link submit error", err);
+      setState({ ...state, error: err.response.data.error });
+    }
   };
 
   const handleTitleChange = (e) => {
@@ -173,8 +199,12 @@ const Create = () => {
           value={url}
         />
       </div>
-      <button className="btn btn-outline-warning" type="submit">
-        Submit
+      <button
+        disabled={!token}
+        className="btn btn-outline-warning"
+        type="submit"
+      >
+        {isAuth() || token ? "Post" : "Login to post"}
       </button>
     </form>
   );
@@ -202,10 +232,19 @@ const Create = () => {
             {showMedium()}
           </div>
         </div>
-        <div className="col-md-8">{submitLinkForm()}</div>
+        <div className="col-md-8">
+          {success && showSuccessMessage(success)}
+          {error && showErrorMessage(error)}
+          {submitLinkForm()}
+        </div>
       </div>
     </div>
   );
+};
+
+Create.getInitialProps = ({ req }) => {
+  const token = getCookie("token", req);
+  return { token };
 };
 
 export default Create;
