@@ -13,13 +13,14 @@ const s3 = new AWS.S3({
 });
 
 export const create = (req, res) => {
-  const { name, image, content } = req.body;
+  const { name, content, image } = req.body;
   // image data
   const base64Data = new Buffer.from(
-    image.replace(/^data:image\/w+;base64,/, ""),
+    image.replace(/^data:image\/\w+;base64,/, ""),
     "base64"
   );
   const type = image.split(";")[0].split("/")[1];
+
 
   const slug = slugify(name);
   let category = new Category({ name, content, slug });
