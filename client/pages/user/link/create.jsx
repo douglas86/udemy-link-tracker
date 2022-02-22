@@ -38,7 +38,8 @@ const Create = () => {
   };
 
   const handleSubmit = async (e) => {
-    console.log("e", e);
+    e.preventDefault();
+    console.table({ title, url, categories, type, medium });
   };
 
   const handleTitleChange = (e) => {
@@ -48,6 +49,78 @@ const Create = () => {
   const handleURLChange = (e) => {
     setState({ ...state, url: e.target.value, error: "", success: "" });
   };
+
+  const handleTypeClick = (e) => {
+    setState({ ...state, type: e.target.value, success: "", error: "" });
+  };
+
+  const handleMediumClick = (e) => {
+    setState({ ...state, medium: e.target.value, success: "", error: "" });
+  };
+
+  const showMedium = () => (
+    <>
+      <div className="form-check ml-3">
+        <label className="form-check-label">
+          <input
+            type="radio"
+            onClick={handleMediumClick}
+            checked={medium === "video"}
+            value="video"
+            className="from-check-input"
+            name="medium"
+          />
+          {"  "}
+          Video
+        </label>
+      </div>
+      <div className="form-check ml-3">
+        <label className="form-check-label">
+          <input
+            type="radio"
+            onClick={handleMediumClick}
+            checked={medium === "book"}
+            value="book"
+            className="from-check-input"
+            name="medium"
+          />
+          {"  "}Book
+        </label>
+      </div>
+    </>
+  );
+
+  const showTypes = () => (
+    <>
+      <div className="form-check ml-3">
+        <label className="form-check-label">
+          <input
+            type="radio"
+            onClick={handleTypeClick}
+            checked={type === "free"}
+            value="free"
+            className="from-check-input"
+            name="type"
+          />
+          {"  "}
+          Free
+        </label>
+      </div>
+      <div className="form-check ml-3">
+        <label className="form-check-label">
+          <input
+            type="radio"
+            onClick={handleTypeClick}
+            checked={type === "paid"}
+            value="paid"
+            className="from-check-input"
+            name="type"
+          />
+          {"  "}Paid
+        </label>
+      </div>
+    </>
+  );
 
   const handleToggle = (c) => () => {
     // return the first index -1
@@ -120,10 +193,17 @@ const Create = () => {
               {showCategories()}
             </ul>
           </div>
+          <div className="form-group">
+            <label className="text-muted ml-4">Type</label>
+            {showTypes()}
+          </div>
+          <div className="form-group">
+            <label className="text-muted ml-4">Medium</label>
+            {showMedium()}
+          </div>
         </div>
         <div className="col-md-8">{submitLinkForm()}</div>
       </div>
-      {JSON.stringify(categories)}
     </div>
   );
 };
