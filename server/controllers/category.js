@@ -1,4 +1,5 @@
 import Category from "../models/category";
+import Link from "../models/link";
 import slugify from "slugify";
 import formidable from "formidable";
 import AWS from "aws-sdk";
@@ -137,7 +138,34 @@ export const list = (req, res) => {
 };
 
 export const read = (req, res) => {
-  //
+  const { slug } = req.params;
+  let limit = req.body.limit ? parseInt(req.body.limit) : 10;
+  let skip = req.body.skip ? parseInt(req.body.skip) : 10;
+
+  Category.findOne({ slug })
+    .populate("postedBy", "_id name username")
+    .exec((err, category) => {
+      if (err) {
+        return res.status(400).json({
+          error: "Could not load category",
+        });
+      }
+      // res.json({ category });
+      Link.find({ categories: category })
+        .populate("postedBy", "_id name username")
+        .populate("categories", "name")
+        .sort({ createdAt: -1 })
+        .limit(limit)
+        .skip(skip)
+        .exec((err, links) => {
+          if (err) {
+            return res.status(400).json({
+              error: "Could not load links of a category",
+            });
+          }
+          res.json({ category, links });
+        });
+    });
 };
 
 export const update = (req, res) => {
