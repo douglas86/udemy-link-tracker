@@ -1,24 +1,24 @@
-import express from "express";
-import cors from "cors";
-import mongoose from "mongoose";
+import express from 'express';
+import cors from 'cors';
+import mongoose from 'mongoose';
 
-require("dotenv").config();
+require('dotenv').config();
 
 // import routes
-import authRoutes from "./router/auth";
-import userRoutes from "./router/user";
-import categoryRoutes from "./router/category";
-import linkRoutes from "./router/link";
+import authRoutes from './router/auth';
+import userRoutes from './router/user';
+import categoryRoutes from './router/category';
+import linkRoutes from './router/link';
 
 const app = express();
 
 // middlewares
 app.use(cors({ origin: process.env.CLIENT_URL }));
-app.use(express.json({ limit: "5mb", type: "application/json" }));
-app.use("/api", authRoutes);
-app.use("/api", userRoutes);
-app.use("/api", categoryRoutes);
-app.use("/api", linkRoutes);
+app.use(express.json({ limit: '5mb', type: 'application/json' }));
+app.use('/api', authRoutes);
+app.use('/api', userRoutes);
+app.use('/api', categoryRoutes);
+app.use('/api', linkRoutes);
 
 // app.get('/api/register', (req, res) => {
 //     res.json({
@@ -30,7 +30,7 @@ const PORT = process.env.PORT;
 
 mongoose
   .connect(process.env.DATABASE_CLOUD)
-  .then(() => console.log("DB connected"))
+  .then(() => console.log('DB connected'))
   .catch((err) => console.log(err));
 
 app.listen(PORT, () => {

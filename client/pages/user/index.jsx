@@ -1,6 +1,6 @@
-import axios from "axios";
-import { getCookie } from "../../helpers/auth";
-import withUser from "../withUser";
+import axios from 'axios';
+import { getCookie } from '../../helpers/auth';
+import withUser from '../withUser';
 
 const User = ({ user, token }) => {
   return (
