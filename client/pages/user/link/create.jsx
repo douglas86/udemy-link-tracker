@@ -1,20 +1,20 @@
 // imports
-import { useState, useEffect } from "react";
-import axios from "axios";
-import { showSuccessMessage, showErrorMessage } from "../../../helpers/alerts";
-import { getCookie, isAuth } from "../../../helpers/auth";
+import { useState, useEffect } from 'react';
+import axios from 'axios';
+import { showSuccessMessage, showErrorMessage } from '../../../helpers/alerts';
+import { getCookie, isAuth } from '../../../helpers/auth';
 
 const Create = ({ token }) => {
   // state
   const [state, setState] = useState({
-    title: "",
-    url: "",
+    title: '',
+    url: '',
     categories: [],
     loadedCategories: [],
-    success: "",
-    error: "",
-    type: "",
-    medium: "",
+    success: '',
+    error: '',
+    type: '',
+    medium: '',
   });
   const {
     title,
@@ -53,35 +53,35 @@ const Create = ({ token }) => {
       );
       setState({
         ...state,
-        title: "",
-        url: "",
-        success: "Link is created",
-        error: "",
+        title: '',
+        url: '',
+        success: 'Link is created',
+        error: '',
         loadedCategories: [],
         categories: [],
-        type: "",
-        medium: "",
+        type: '',
+        medium: '',
       });
     } catch (err) {
-      console.log("Link submit error", err);
+      console.log('Link submit error', err);
       setState({ ...state, error: err.response.data.error });
     }
   };
 
   const handleTitleChange = (e) => {
-    setState({ ...state, title: e.target.value, error: "", success: "" });
+    setState({ ...state, title: e.target.value, error: '', success: '' });
   };
 
   const handleURLChange = (e) => {
-    setState({ ...state, url: e.target.value, error: "", success: "" });
+    setState({ ...state, url: e.target.value, error: '', success: '' });
   };
 
   const handleTypeClick = (e) => {
-    setState({ ...state, type: e.target.value, success: "", error: "" });
+    setState({ ...state, type: e.target.value, success: '', error: '' });
   };
 
   const handleMediumClick = (e) => {
-    setState({ ...state, medium: e.target.value, success: "", error: "" });
+    setState({ ...state, medium: e.target.value, success: '', error: '' });
   };
 
   const showMedium = () => (
@@ -91,12 +91,12 @@ const Create = ({ token }) => {
           <input
             type="radio"
             onClick={handleMediumClick}
-            checked={medium === "video"}
+            checked={medium === 'video'}
             value="video"
             className="from-check-input"
             name="medium"
           />
-          {"  "}
+          {'  '}
           Video
         </label>
       </div>
@@ -105,12 +105,12 @@ const Create = ({ token }) => {
           <input
             type="radio"
             onClick={handleMediumClick}
-            checked={medium === "book"}
+            checked={medium === 'book'}
             value="book"
             className="from-check-input"
             name="medium"
           />
-          {"  "}Book
+          {'  '}Book
         </label>
       </div>
     </>
@@ -123,12 +123,12 @@ const Create = ({ token }) => {
           <input
             type="radio"
             onClick={handleTypeClick}
-            checked={type === "free"}
+            checked={type === 'free'}
             value="free"
             className="from-check-input"
             name="type"
           />
-          {"  "}
+          {'  '}
           Free
         </label>
       </div>
@@ -137,12 +137,12 @@ const Create = ({ token }) => {
           <input
             type="radio"
             onClick={handleTypeClick}
-            checked={type === "paid"}
+            checked={type === 'paid'}
             value="paid"
             className="from-check-input"
             name="type"
           />
-          {"  "}Paid
+          {'  '}Paid
         </label>
       </div>
     </>
@@ -157,8 +157,8 @@ const Create = ({ token }) => {
     } else {
       all.splice(clickedCatagory, 1);
     }
-    console.log("all >> categories", all);
-    setState({ ...state, categories: all, success: "", error: "" });
+    console.log('all >> categories', all);
+    setState({ ...state, categories: all, success: '', error: '' });
   };
 
   // show categories checkbox
@@ -204,7 +204,7 @@ const Create = ({ token }) => {
         className="btn btn-outline-warning"
         type="submit"
       >
-        {isAuth() || token ? "Post" : "Login to post"}
+        {isAuth() || token ? 'Post' : 'Login to post'}
       </button>
     </form>
   );
@@ -219,7 +219,7 @@ const Create = ({ token }) => {
         <div className="col-md-4">
           <div className="form-group">
             <label className="text-muted ml-4">Categories</label>
-            <ul style={{ maxHeight: "100px", overflowY: "scroll" }}>
+            <ul style={{ maxHeight: '100px', overflowY: 'scroll' }}>
               {showCategories()}
             </ul>
           </div>
@@ -243,7 +243,7 @@ const Create = ({ token }) => {
 };
 
 Create.getInitialProps = ({ req }) => {
-  const token = getCookie("token", req);
+  const token = getCookie('token', req);
   return { token };
 };
 

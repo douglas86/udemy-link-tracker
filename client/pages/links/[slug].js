@@ -1,8 +1,7 @@
-import axios from "axios";
-import moment from "moment";
-import { useState } from "react";
-import Link from "next/link";
-import renderHTML from "react-render-html";
+import axios from 'axios';
+import moment from 'moment';
+import { useState } from 'react';
+import renderHTML from 'react-render-html';
 
 const Links = ({
   query,
@@ -13,14 +12,17 @@ const Links = ({
   linkSkip,
 }) => {
   const [allLinks, setAllLinks] = useState(links);
+  const [limit, setLimit] = useState(linksLimit);
+  const [skip, setSkip] = useState(0);
+  const [size, setSize] = useState(totalLinks);
 
   const listOfLinks = () =>
     allLinks.map((l, i) => (
-      <div className="row alert alert-primary p-2">
+      <div key={i} className="row alert alert-primary p-2">
         <div className="col-md-8">
           <a href={l.url} target="_blank">
             <h5 className="pt-2">{l.title}</h5>
-            <h6 className="pt-2 text-danger" style={{ fontSize: "12px" }}>
+            <h6 className="pt-2 text-danger" style={{ fontSize: '12px' }}>
               {l.url}
             </h6>
           </a>
@@ -35,11 +37,36 @@ const Links = ({
             {l.type} / {l.medium}
           </span>
           {l.categories.map((c, i) => (
-            <span className="badge text-success">{c.name}</span>
+            <span key={i} className="badge text-success">
+              {c.name}
+            </span>
           ))}
         </div>
       </div>
     ));
+
+  const loadMore = async () => {
+    let toSkip = skip + limit;
+    const response = await axios.post(
+      `${process.env.NEXT_PUBLIC_API}/category/${query.slug}`,
+      { skip: toSkip, limit }
+    );
+    setAllLinks([...allLinks, ...response.data.links]);
+    setSize(response.data.links.length);
+    setSkip(toSkip);
+  };
+
+  const loadMoreButton = () => {
+    return (
+      size > 0 &&
+      size >= limit && (
+        <button onClick={loadMore} className="but btn-outline-primary btn-lg">
+          Load more
+        </button>
+      )
+    );
+  };
+
   return (
     <>
       <div className="row">
@@ -48,14 +75,14 @@ const Links = ({
             {category.name} - URL/Links
           </h1>
           <div className="lead alert alert-secondary pt-4">
-            {renderHTML(category.content || "")}
+            {renderHTML(category.content || '')}
           </div>
         </div>
         <div className="col-md-4">
           <img
             src={category.image.url}
             alt={category.name}
-            style={{ width: "auto", maxHeight: "200px" }}
+            style={{ width: 'auto', maxHeight: '200px' }}
           />
         </div>
       </div>
@@ -67,14 +94,14 @@ const Links = ({
           <p>show popular links</p>
         </div>
       </div>
-      <p>load more button</p>
+      <div className="text-center pt-4 pb-5">{loadMoreButton()}</div>
     </>
   );
 };
 
 Links.getInitialProps = async ({ query, req }) => {
   let skip = 0;
-  let limit = 5;
+  let limit = 2;
 
   const response = await axios.post(
     `${process.env.NEXT_PUBLIC_API}/category/${query.slug}`,
