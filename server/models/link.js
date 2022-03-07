@@ -1,4 +1,4 @@
-import mongoose from "mongoose";
+import mongoose from 'mongoose';
 
 const ObjectId = mongoose.Schema.Types.ObjectId;
 
@@ -24,22 +24,22 @@ const linkSchema = new mongoose.Schema(
     },
     postedBy: {
       type: ObjectId,
-      ref: "Use",
+      ref: 'Use',
     },
     categories: [
       {
         type: ObjectId,
-        ref: "Category",
+        ref: 'Category',
         required: true,
       },
     ],
     type: {
       type: String,
-      default: "Free",
+      default: 'Free',
     },
     medium: {
       type: String,
-      default: "Video",
+      default: 'Video',
     },
     clicks: {
       type: Number,
@@ -49,4 +49,4 @@ const linkSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-export default mongoose.model("Link", linkSchema);
+export default mongoose.model('Link', linkSchema);
