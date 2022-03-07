@@ -2,6 +2,7 @@ import axios from 'axios';
 import moment from 'moment';
 import { useState } from 'react';
 import renderHTML from 'react-render-html';
+import InfiniteScroll from 'react-infinite-scroller';
 
 const Links = ({
   query,
@@ -34,7 +35,7 @@ const Links = ({
   const listOfLinks = () =>
     allLinks.map((l, i) => (
       <div key={i} className="row alert alert-primary p-2">
-        <div className="col-md-8" onClick={(e) => handleClick(l._id)}>
+        <div className="col-md-8" onClick={() => handleClick(l._id)}>
           <a href={l.url} target="_blank">
             <h5 className="pt-2">{l.title}</h5>
             <h6 className="pt-2 text-danger" style={{ fontSize: '12px' }}>
@@ -75,16 +76,16 @@ const Links = ({
     setSkip(toSkip);
   };
 
-  const loadMoreButton = () => {
-    return (
-      size > 0 &&
-      size >= limit && (
-        <button onClick={loadMore} className="but btn-outline-primary btn-lg">
-          Load more
-        </button>
-      )
-    );
-  };
+  // const loadMoreButton = () => {
+  //   return (
+  //     size > 0 &&
+  //     size >= limit && (
+  //       <button onClick={loadMore} className="but btn-outline-primary btn-lg">
+  //         Load more
+  //       </button>
+  //     )
+  //   );
+  // };
 
   return (
     <>
@@ -113,7 +114,19 @@ const Links = ({
           <p>show popular links</p>
         </div>
       </div>
-      <div className="text-center pt-4 pb-5">{loadMoreButton()}</div>
+      {/*<div className="text-center pt-4 pb-5">{loadMoreButton()}</div>*/}
+      <div className="row">
+        <div className="col-md-12 text-cen">
+          <InfiniteScroll
+            pageStart={0}
+            loadMore={loadMore}
+            hasMore={size > 0 && size >= limit}
+            loader={
+              <img src="/static/images/spinning-loading.gif" alt="loading" />
+            }
+          ></InfiniteScroll>
+        </div>
+      </div>
     </>
   );
 };
