@@ -1,7 +1,7 @@
 import axios from 'axios';
 import moment from 'moment';
 import { useState } from 'react';
-import Link from 'next/link';
+// import Link from 'next/link';
 import renderHTML from 'react-render-html';
 import InfiniteScroll from 'react-infinite-scroller';
 
@@ -105,6 +105,7 @@ const Links = ({
                         hasMore={size > 0 && size >= limit}
                         loader={
                             <img
+                                key={0}
                                 src="/static/images/spinning-loading.gif"
                                 alt="loading"
                             />

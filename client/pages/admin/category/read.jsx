@@ -24,16 +24,20 @@ const Read = ({ user, token }) => {
         setState({ ...state, categories: response.data });
     };
 
+    const confirmDelete = (slug) => {
+        console.log('slug', slug);
+    };
+
     const listCategories = () =>
         categories.map((c, i) => (
-            <Link href={`/links/${c.slug}`} key={i}>
+            <Link href={`/links/${c.slug}`} key={i} passHref>
                 <a
                     style={{ border: '1px solid red' }}
                     className="bg-light p-3 col-md-4"
                 >
                     <div>
                         <div className="row">
-                            <div className="col-md-4">
+                            <div className="col-md-3">
                                 <img
                                     src={c.image && c.image.url}
                                     alt={c.name}
@@ -41,8 +45,24 @@ const Read = ({ user, token }) => {
                                     className="pr-3"
                                 />
                             </div>
-                            <div className="col-md-8">
+                            <div className="col-md-6">
                                 <h3>{c.name}</h3>
+                            </div>
+                            <div className="col-md-3">
+                                <Link
+                                    href={`/admin/category/${c.slug}`}
+                                    passHref
+                                >
+                                    <button className="btn btn-sm btn-outline-success btn-block mb-1">
+                                        Update
+                                    </button>
+                                </Link>
+                                <button
+                                    onClick={() => confirmDelete(c.slug)}
+                                    className="btn btn-sm btn-outline-danger btn-block mb-1"
+                                >
+                                    Delete
+                                </button>
                             </div>
                         </div>
                     </div>
