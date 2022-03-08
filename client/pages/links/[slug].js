@@ -61,6 +61,7 @@ const Links = ({
                             {c.name}
                         </span>
                     ))}
+                    <p style={{ float: 'right' }}>{l.clicks} clicks</p>
                 </div>
             </div>
         ));
