@@ -18,13 +18,13 @@ const Layout = ({ children }) => {
   const nav = () => (
     <ul className="nav nav-tabs bg-warning">
       <li className="nav-item">
-        <Link href="/">
+        <Link href="/" passHref>
           <a className="nav-link text-dark">Home</a>
         </Link>
       </li>
 
       <li className="nav-item">
-        <Link href="/user/link/create">
+        <Link href="/user/link/create" passHref>
           <a
             className="nav-link text-dark btn btn-success"
             style={{ borderRadius: "0px" }}
@@ -37,12 +37,12 @@ const Layout = ({ children }) => {
       {!isAuth() && (
         <>
           <li className="nav-item">
-            <Link href="/login">
+            <Link href="/login" passHref>
               <a className="nav-link text-dark">Login</a>
             </Link>
           </li>
           <li className="nav-item">
-            <Link href="/register">
+            <Link href="/register" passHref>
               <a className="nav-link text-dark">Register</a>
             </Link>
           </li>
@@ -51,7 +51,7 @@ const Layout = ({ children }) => {
 
       {isAuth() && isAuth().role === "admin" && (
         <li className="nav-item ml-auto">
-          <Link href="/admin">
+          <Link href="/admin" passHref>
             <a className="nav-link text-dark">{isAuth().name}</a>
           </Link>
         </li>
@@ -59,7 +59,7 @@ const Layout = ({ children }) => {
 
       {isAuth() && isAuth().role === "subscriber" && (
         <li className="nav-item ml-auto">
-          <Link href="/user">
+          <Link href="/user" passHref>
             <a className="nav-link text-dark">{isAuth().name}</a>
           </Link>
         </li>
