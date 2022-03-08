@@ -36,7 +36,7 @@ const Links = ({
     const listOfLinks = () =>
         allLinks.map((l, i) => (
             <div key={i} className="row alert alert-primary p-2">
-                <div className="col-md-8">
+                <div className="col-md-8" onClick={(e) => handleClick(l._id)}>
                     <a href={l.url} target="_blank">
                         <h5 className="pt-2">{l.title}</h5>
                         <h6
