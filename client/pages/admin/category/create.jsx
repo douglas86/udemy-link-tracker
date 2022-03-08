@@ -84,7 +84,6 @@ const Create = ({ user, token }) => {
       setState({
         ...state,
         name: '',
-        content: '',
         buttonText: 'Created',
         imageUploadText: 'Upload image',
         success: `${response.data.name} is created`,

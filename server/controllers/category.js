@@ -183,7 +183,7 @@ export const update = (req, res) => {
                 // remove the existing image from s3 before uploading new/updated one
                 const deleteParams = {
                     Bucket: 'hackr-douglas',
-                    Key: `category/${updated.image.key}`,
+                    Key: `${updated.image.key}`,
                 };
                 s3.deleteObject(deleteParams, (err, data) => {
                     if (err) console.log('S3 delete error during update', err);
@@ -238,7 +238,7 @@ export const remove = (req, res) => {
         // remove the existing image from s3 before uploading new/updated one
         const deleteParams = {
             Bucket: 'hackr-douglas',
-            Key: `category/${data.image.key}`,
+            Key: `${data.image.key}`,
         };
         s3.deleteObject(deleteParams, (err, data) => {
             if (err) console.log('S3 delete error during', err);
