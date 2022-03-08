@@ -1,4 +1,4 @@
-import express from "express";
+import express from 'express';
 
 const router = express.Router();
 
@@ -6,32 +6,32 @@ const router = express.Router();
 import {
   categoryCreateValidator,
   categoryUpdateValidator,
-} from "../validators/category";
-import { runValidation } from "../validators";
+} from '../validators/category';
+import { runValidation } from '../validators';
 
 // controllers
-import { requireSignIn, adminMiddleWare } from "../controllers/auth";
-import { create, list, read, update, remove } from "../controllers/category";
+import { requireSignIn, adminMiddleWare } from '../controllers/auth';
+import { create, list, read, update, remove } from '../controllers/category';
 
 // routes
 router.post(
-  "/category",
+  '/category',
   categoryCreateValidator,
   runValidation,
   requireSignIn,
   adminMiddleWare,
   create
 );
-router.get("/categories", list);
-router.post("/category/:slug", read);
+router.get('/categories', list);
+router.post('/category/:slug', read);
 router.put(
-  "/category/:slug",
+  '/category/:slug',
   categoryUpdateValidator,
   runValidation,
   requireSignIn,
   adminMiddleWare,
   update
 );
-router.delete("/category/:slug", requireSignIn, adminMiddleWare, remove);
+router.delete('/category/:slug', requireSignIn, adminMiddleWare, remove);
 
 export default router;

@@ -8,20 +8,21 @@ import 'react-quill/dist/quill.bubble.css';
 
 const ReactQuill = dynamic(() => import('react-quill'), { ssr: false });
 
-const Create = ({ user, token }) => {
+const Update = ({ oldCategory, token }) => {
   const [state, setState] = useState({
-    name: '',
+    name: oldCategory.name,
     error: '',
     success: '',
-    buttonText: 'Create',
+    buttonText: 'Update',
+    imagePreview: oldCategory.image.url,
     image: '',
   });
-  const [content, setContent] = useState('');
+  const [content, setContent] = useState(oldCategory.content);
 
   const [imageUploadButtonName, setImageUploadButtonName] =
-    useState('Upload image');
+    useState('Update image');
 
-  const { name, error, success, buttonText, imageUploadText, image } = state;
+  const { name, error, success, buttonText, imagePreview, image } = state;
 
   const handleChange = (name) => (e) => {
     setState({
@@ -67,10 +68,10 @@ const Create = ({ user, token }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setState({ ...state, buttonText: 'Creating' });
+    setState({ ...state, buttonText: 'Updating' });
     try {
-      const response = await axios.post(
-        `${process.env.NEXT_PUBLIC_API}/category`,
+      const response = await axios.put(
+        `${process.env.NEXT_PUBLIC_API}/category/${oldCategory.slug}`,
         { name, content, image },
         {
           headers: {
@@ -78,16 +79,18 @@ const Create = ({ user, token }) => {
           },
         }
       );
-      console.log('category create response', response);
-      setImageUploadButtonName('Upload image');
+      console.log('category update response', response);
+      setImageUploadButtonName('Update image');
       setContent('');
       setState({
         ...state,
-        name: '',
-        buttonText: 'Created',
-        imageUploadText: 'Upload image',
-        success: `${response.data.name} is created`,
+        name: response.data.name,
+        buttonText: 'Updated',
+        imageUploadText: 'Update image',
+        imagePreview: response.data.image.url,
+        success: `${response.data.name} is update`,
       });
+      setContent(response.data.content);
     } catch (error) {
       console.log('Category create error', error);
       setState({
@@ -99,7 +102,7 @@ const Create = ({ user, token }) => {
     }
   };
 
-  const createCategoryForm = () => (
+  const updateCategoryForm = () => (
     <form onSubmit={handleSubmit}>
       <div className="form-group">
         <label className="text-muted">Name</label>
@@ -124,7 +127,10 @@ const Create = ({ user, token }) => {
       </div>
       <div className="form-group">
         <label className="btn btn-outline-secondary">
-          {imageUploadButtonName}
+          {imageUploadButtonName}{' '}
+          <span>
+            <img src={imagePreview} alt="image" height="20" />
+          </span>
           <input
             onChange={handleImage}
             type="file"
@@ -148,14 +154,21 @@ const Create = ({ user, token }) => {
   return (
     <div className="row">
       <div className="col-md-6 offset-md-3">
-        <h1>Create category</h1>
+        <h1>Update category</h1>
         <br />
         {success && showSuccessMessage(success)}
         {error && showErrorMessage(error)}
-        {createCategoryForm()}
+        {updateCategoryForm()}
       </div>
     </div>
   );
 };
 
-export default withAdmin(Create);
+Update.getInitialProps = async ({ req, query, token }) => {
+  const response = await axios.post(
+    `${process.env.NEXT_PUBLIC_API}/category/${query.slug}`
+  );
+  return { oldCategory: response.data.category, token };
+};
+
+export default withAdmin(Update);
