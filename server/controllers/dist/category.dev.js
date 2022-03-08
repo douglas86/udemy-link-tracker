@@ -260,7 +260,30 @@ var update = function update(req, res) {
 
 exports.update = update;
 
-var remove = function remove(req, res) {//
+var remove = function remove(req, res) {
+  var slug = req.params.slug;
+
+  _category["default"].findOneAndRemove({
+    slug: slug
+  }).exec(function (err, data) {
+    if (err) {
+      return res.status(400).json({
+        error: 'Could not delete category'
+      });
+    } // remove the existing image from s3 before uploading new/updated one
+
+
+    var deleteParams = {
+      Bucket: 'hackr-douglas',
+      Key: "category/".concat(data.image.key)
+    };
+    s3.deleteObject(deleteParams, function (err, data) {
+      if (err) console.log('S3 delete error during', err);else console.log('s3 deleted during update', data);
+    });
+    res.json({
+      message: 'Category deleted successfully'
+    });
+  });
 };
 
 exports.remove = remove;
