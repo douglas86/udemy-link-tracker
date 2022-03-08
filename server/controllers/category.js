@@ -168,7 +168,61 @@ export const read = (req, res) => {
 };
 
 export const update = (req, res) => {
-    //
+    const { slug } = req.params;
+    const { name, image, content } = req.body;
+
+    Category.findOneAndUpdate({ slug }, { name, content }, { new: true }).exec(
+        (err, updated) => {
+            if (err) {
+                return res.status(400).json({
+                    error: 'Could not find category to update',
+                });
+            }
+            console.log('Updated', updated);
+            if (image) {
+                // remove the existing image from s3 before uploading new/updated one
+                const deleteParams = {
+                    Bucket: 'hackr-douglas',
+                    Key: `category/${updated.image.key}`,
+                };
+                s3.deleteObject(deleteParams, (err, data) => {
+                    if (err) console.log('S3 delete error during update', err);
+                    else console.log('s3 deleted during update', data);
+                });
+
+                // handle upload image
+                const params = {
+                    Bucket: 'hackr-douglas',
+                    Key: `category/${uuidv4()}.${type}`,
+                    Body: base64Data,
+                    ACL: 'public-read',
+                    ContentEncoding: 'base64',
+                    ContentType: `image/${type}`,
+                };
+
+                s3.upload(params, (err, data) => {
+                    if (err)
+                        res.status(400).json({ error: 'Upload to s3 failed' });
+                    console.log('aws upload res data', data);
+                    updated.image.url = data.Location;
+                    updated.image.key = data.Key;
+
+                    // save to db
+                    updated.save((err, success) => {
+                        if (err) {
+                            console.log('err', err);
+                            res.status(400).json({
+                                error: 'Error saving category to db',
+                            });
+                        }
+                        res.json(success);
+                    });
+                });
+            } else {
+                res.json(updated);
+            }
+        }
+    );
 };
 
 export const remove = (req, res) => {

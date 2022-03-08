@@ -192,7 +192,70 @@ var read = function read(req, res) {
 
 exports.read = read;
 
-var update = function update(req, res) {//
+var update = function update(req, res) {
+  var slug = req.params.slug;
+  var _req$body2 = req.body,
+      name = _req$body2.name,
+      image = _req$body2.image,
+      content = _req$body2.content;
+
+  _category["default"].findOneAndUpdate({
+    slug: slug
+  }, {
+    name: name,
+    content: content
+  }, {
+    "new": true
+  }).exec(function (err, updated) {
+    if (err) {
+      return res.status(400).json({
+        error: 'Could not find category to update'
+      });
+    }
+
+    console.log('Updated', updated);
+
+    if (image) {
+      // remove the existing image from s3 before uploading new/updated one
+      var deleteParams = {
+        Bucket: 'hackr-douglas',
+        Key: "category/".concat(updated.image.key)
+      };
+      s3.deleteObject(deleteParams, function (err, data) {
+        if (err) console.log('S3 delete error during update', err);else console.log('s3 deleted during update', data);
+      }); // handle upload image
+
+      var params = {
+        Bucket: 'hackr-douglas',
+        Key: "category/".concat((0, _uuid.v4)(), ".").concat(type),
+        Body: base64Data,
+        ACL: 'public-read',
+        ContentEncoding: 'base64',
+        ContentType: "image/".concat(type)
+      };
+      s3.upload(params, function (err, data) {
+        if (err) res.status(400).json({
+          error: 'Upload to s3 failed'
+        });
+        console.log('aws upload res data', data);
+        updated.image.url = data.Location;
+        updated.image.key = data.Key; // save to db
+
+        updated.save(function (err, success) {
+          if (err) {
+            console.log('err', err);
+            res.status(400).json({
+              error: 'Error saving category to db'
+            });
+          }
+
+          res.json(success);
+        });
+      });
+    } else {
+      res.json(updated);
+    }
+  });
 };
 
 exports.update = update;
