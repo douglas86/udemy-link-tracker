@@ -24,8 +24,31 @@ const Read = ({ user, token }) => {
         setState({ ...state, categories: response.data });
     };
 
-    const confirmDelete = (slug) => {
-        console.log('slug', slug);
+    const confirmDelete = (e, slug) => {
+        e.preventDefault();
+        // console.log('slug', slug);
+        let answer = window.confirm('Are you sure you want to delete');
+        if (answer) {
+            handleDelete(slug);
+        }
+    };
+
+    const handleDelete = async (slug) => {
+        try {
+            const response = axios.delete(
+                `${process.env.NEXT_PUBLIC_API}/category/${slug}`,
+                {
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                    },
+                }
+            );
+            console.log('Category delete success', response);
+            loadCategories();
+            window.location.reload(false);
+        } catch (error) {
+            console.log('category delete', err);
+        }
     };
 
     const listCategories = () =>
@@ -58,7 +81,7 @@ const Read = ({ user, token }) => {
                                     </button>
                                 </Link>
                                 <button
-                                    onClick={() => confirmDelete(c.slug)}
+                                    onClick={(e) => confirmDelete(e, c.slug)}
                                     className="btn btn-sm btn-outline-danger btn-block mb-1"
                                 >
                                     Delete
