@@ -37,6 +37,6 @@ router.put(
   authMiddleWare,
   update
 );
-router.delete('/link/:slug', requireSignIn, authMiddleWare, remove);
+router.delete('/link/:id', requireSignIn, authMiddleWare, remove);
 
 export default router;

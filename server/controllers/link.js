@@ -32,9 +32,13 @@ export const list = (req, res) => {
 
 export const read = (req, res) => {};
 
-export const update = (req, res) => {};
+export const update = (req, res) => {
+  //
+};
 
-export const remove = (req, res) => {};
+export const remove = (req, res) => {
+  //
+};
 
 export const clickCount = (req, res) => {
   const { linkId } = req.body;
