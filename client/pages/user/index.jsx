@@ -2,13 +2,8 @@ import axios from 'axios';
 import { getCookie } from '../../helpers/auth';
 import withUser from '../withUser';
 
-const User = ({ user, token }) => {
-  return (
-    <>
-      <h1>Hello User</h1>
-      {JSON.stringify(user)}
-    </>
-  );
+const User = ({ user, userLinks }) => {
+  return <>{JSON.stringify(userLinks)}</>;
 };
 
 export default withUser(User);
