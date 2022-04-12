@@ -33,11 +33,34 @@ export const list = (req, res) => {
 export const read = (req, res) => {};
 
 export const update = (req, res) => {
-  //
+  const { id } = req.params;
+  const { title, url, category, type, medium } = req.body;
+  const updatedLink = { title, url, category, type, medium };
+
+  Link.findOneAndUpdate({ _id: id }, updatedLink, { new: true }).exec(
+    (err, updated) => {
+      if (err) {
+        return res.status(400).json({
+          error: 'Error updating the link',
+        });
+      }
+      res.json(updated);
+    }
+  );
 };
 
 export const remove = (req, res) => {
-  //
+  const { id } = req.params;
+  Link.findOneAndRemove({ _id: id }).exec((err, data) => {
+    if (err) {
+      return res.status(400).json({
+        error: 'Error removing the link',
+      });
+    }
+    res.json({
+      message: 'Link removed successfully',
+    });
+  });
 };
 
 export const clickCount = (req, res) => {
