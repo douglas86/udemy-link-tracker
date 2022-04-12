@@ -30,7 +30,17 @@ export const list = (req, res) => {
   });
 };
 
-export const read = (req, res) => {};
+export const read = (req, res) => {
+  const { id } = req.params;
+  Link.findOne({ _id: id }).exec((err, data) => {
+    if (err) {
+      return res.status(400).json({
+        error: 'Error finding link',
+      });
+    }
+    res.json(data);
+  });
+};
 
 export const update = (req, res) => {
   const { id } = req.params;

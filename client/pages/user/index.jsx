@@ -59,7 +59,7 @@ const User = ({ user, userLinks, token }) => {
                 </span>
                 <span className="badge text-success">{c.name}</span>
                 <span className="badge text-secondary">{l.clicks} clicks</span>
-                <Link href={`/user/link/${l.slug}`} passHref>
+                <Link href={`/user/link/${l._id}`} passHref>
                   <span className="badge text-warning pull-right">Update</span>
                 </Link>
                 <span
