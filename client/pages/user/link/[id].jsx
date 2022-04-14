@@ -43,9 +43,18 @@ const Update = ({ oldLink, token }) => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         // console.table({ title, url, categories, type, medium });
+        // use update link based on logged on users role
+
+        let dynamicUpdateURL;
+
+        if (isAuth() && isAuth().role === 'admin') {
+            dynamicUpdateURL = `${process.env.NEXT_PUBLIC_API}/link/admin/${oldLink._id}`;
+        } else {
+            dynamicUpdateURL = `${process.env.NEXT_PUBLIC_API}/link/${oldLink._id}`;
+        }
         try {
             const response = await axios.put(
-                `${process.env.NEXT_PUBLIC_API}/link/${oldLink._id}`,
+                dynamicUpdateURL,
                 { title, url, categories, type, medium },
                 {
                     headers: {
