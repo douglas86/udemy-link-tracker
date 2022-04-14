@@ -3,6 +3,7 @@ import moment from 'moment';
 import { useState } from 'react';
 import renderHTML from 'react-render-html';
 import InfiniteScroll from 'react-infinite-scroller';
+import Link from 'next/link';
 import withAdmin from '../../withAdmin';
 import { getCookie } from '../../../helpers/auth';
 
@@ -11,6 +12,32 @@ const Links = ({ links, totalLinks, linksLimit, linkSkip, token }) => {
     const [limit, setAllLimit] = useState(linksLimit);
     const [skip, setSkip] = useState(0);
     const [size, setSize] = useState(totalLinks);
+
+    const confirmDelete = (e, id) => {
+        e.preventDefault();
+        // console.log('slug', slug);
+        let answer = window.confirm('Are you sure you want to delete');
+        if (answer) {
+            handleDelete(id);
+        }
+    };
+
+    const handleDelete = async (id) => {
+        try {
+            const response = axios.delete(
+                `${process.env.NEXT_PUBLIC_API}/link/admin/${id}`,
+                {
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                    },
+                }
+            );
+            console.log('Category link success', response);
+            process.browser && window.location.reload(false);
+        } catch (error) {
+            console.log('category link', err);
+        }
+    };
 
     const listOfLinks = () =>
         allLinks.map((l, i) => (
@@ -32,6 +59,22 @@ const Links = ({ links, totalLinks, linksLimit, linkSkip, token }) => {
                     </span>
                 </div>
                 <div className="col-md-12">
+                    <p style={{ float: 'right' }}>{l.clicks} clicks</p>
+
+                    <span
+                        onClick={(e) => confirmDelete(e, l._id)}
+                        className="badge text-danger pull-right"
+                    >
+                        Delete
+                    </span>
+                    <Link href={`/admin/link/${l._id}`}>
+                        <a>
+                            <span className="badge text-warning pull-right">
+                                Update
+                            </span>
+                        </a>
+                    </Link>
+
                     <span className="badge text-dark">
                         {l.type} / {l.medium}
                     </span>
@@ -40,7 +83,6 @@ const Links = ({ links, totalLinks, linksLimit, linkSkip, token }) => {
                             {c.name}
                         </span>
                     ))}
-                    <p style={{ float: 'right' }}>{l.clicks} clicks</p>
                 </div>
             </div>
         ));
@@ -50,7 +92,7 @@ const Links = ({ links, totalLinks, linksLimit, linkSkip, token }) => {
 
         const response = await axios.post(
             `${process.env.NEXT_PUBLIC_API}/links`,
-            { skip, limit },
+            { skip: toSkip, limit },
             {
                 headers: {
                     Authorization: `Bearer ${token}`,

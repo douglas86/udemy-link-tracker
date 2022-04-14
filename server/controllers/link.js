@@ -25,7 +25,7 @@ export const list = (req, res) => {
 
     Link.find({})
         .populate('postedBy', 'name')
-        .populate('categories', 'name, slug')
+        .populate('categories', 'name slug')
         .sort({ createdAt: -1 })
         .skip(skip)
         .limit(limit)
