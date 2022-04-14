@@ -26,6 +26,8 @@ router.post('/links', _auth.requireSignIn, _auth.adminMiddleWare, _link2.list);
 router.put('/click-count', _link2.clickCount);
 router.get('/link/:id', _link2.read);
 router.put('/link/:id', _link.linkUpdateValidator, _validators.runValidation, _auth.requireSignIn, _auth.authMiddleWare, _link2.update);
+router.put('/link/admin/:id', _link.linkUpdateValidator, _validators.runValidation, _auth.requireSignIn, _auth.adminMiddleWare, _link2.update);
 router["delete"]('/link/:id', _auth.requireSignIn, _auth.authMiddleWare, _link2.remove);
+router["delete"]('/link/admin/:id', _auth.requireSignIn, _auth.adminMiddleWare, _link2.remove);
 var _default = router;
 exports["default"] = _default;

@@ -11,6 +11,7 @@ import {
     requireSignIn,
     authMiddleWare,
     adminMiddleWare,
+    canUpdateDeleteLink,
 } from '../controllers/auth';
 import {
     create,
@@ -39,8 +40,24 @@ router.put(
     runValidation,
     requireSignIn,
     authMiddleWare,
+    canUpdateDeleteLink,
     update
 );
-router.delete('/link/:id', requireSignIn, authMiddleWare, remove);
+router.put(
+    '/link/admin/:id',
+    linkUpdateValidator,
+    runValidation,
+    requireSignIn,
+    adminMiddleWare,
+    update
+);
+router.delete(
+    '/link/:id',
+    requireSignIn,
+    authMiddleWare,
+    canUpdateDeleteLink,
+    remove
+);
+router.delete('/link/admin/:id', requireSignIn, adminMiddleWare, remove);
 
 export default router;
