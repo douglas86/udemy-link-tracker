@@ -1,39 +1,39 @@
-import { useState, useEffect } from "react";
-import Link from "next/link";
-import Router from "next/router";
-import styles from "../public/static/css/register.module.css";
-import axios from "axios";
-import { showSuccessMessage, showErrorMessage } from "../helpers/alerts";
-import { authenticate, isAuth } from "../helpers/auth";
+import { useState, useEffect } from 'react';
+import Link from 'next/link';
+import Router from 'next/router';
+import styles from '../public/static/css/register.module.css';
+import axios from 'axios';
+import { showSuccessMessage, showErrorMessage } from '../helpers/alerts';
+import { authenticate, isAuth } from '../helpers/auth';
 
 const Login = () => {
   const [state, setState] = useState({
-    email: "douglasmaxton@gmail.com",
-    password: "123456",
-    error: "",
-    success: "",
-    buttonText: "Login",
+    email: 'douglasmaxton@gmail.com',
+    password: '123456',
+    error: '',
+    success: '',
+    buttonText: 'Login',
   });
 
   const handleChange = (name) => (e) => {
     setState({
       ...state,
       [name]: e.target.value,
-      error: "",
-      success: "",
-      buttonText: "Login",
+      error: '',
+      success: '',
+      buttonText: 'Login',
     });
   };
 
   useEffect(() => {
-    isAuth() && Router.push("/");
+    isAuth() && Router.push('/');
   }, []);
 
   const { email, password, error, success, buttonText } = state;
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setState({ ...state, buttonText: "Logging in" });
+    setState({ ...state, buttonText: 'Logging in' });
     try {
       const response = await axios.post(
         `${process.env.NEXT_PUBLIC_API}/login`,
@@ -44,14 +44,14 @@ const Login = () => {
       );
       // console.log('res', response); // data > token / user
       authenticate(response, () =>
-        isAuth() && isAuth().role === "admin"
-          ? Router.push("/admin")
-          : Router.push("/user")
+        isAuth() && isAuth().role === 'admin'
+          ? Router.push('/admin')
+          : Router.push('/user')
       );
     } catch (err) {
       setState({
         ...state,
-        buttonText: "Login",
+        buttonText: 'Login',
         error: err.response.data.error,
       });
     }
@@ -63,7 +63,7 @@ const Login = () => {
         <input
           type="email"
           value={email}
-          onChange={handleChange("email")}
+          onChange={handleChange('email')}
           className="form-control"
           placeholder="Type your email"
           required
@@ -73,7 +73,7 @@ const Login = () => {
         <input
           type="password"
           value={password}
-          onChange={handleChange("password")}
+          onChange={handleChange('password')}
           className="form-control"
           placeholder="Type your password"
           required
@@ -92,7 +92,7 @@ const Login = () => {
         {success && showSuccessMessage(success)}
         {error && showErrorMessage(error)}
         {LoginForm()}
-        <Link href="/auth/password/forget">
+        <Link href="/auth/password/forget" passHref>
           <a className="text-danger float-end">Forget Password</a>
         </Link>
       </div>

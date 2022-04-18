@@ -1,7 +1,7 @@
-import Head from "next/head";
-import Link from "next/link";
-import NextNProgress from "nextjs-progressbar";
-import { isAuth, logout } from "../helpers/auth";
+import Head from 'next/head';
+import Link from 'next/link';
+import NextNProgress from 'nextjs-progressbar';
+import { isAuth, logout } from '../helpers/auth';
 
 const Layout = ({ children }) => {
   const head = () => (
@@ -27,7 +27,7 @@ const Layout = ({ children }) => {
         <Link href="/user/link/create" passHref>
           <a
             className="nav-link text-dark btn btn-success"
-            style={{ borderRadius: "0px" }}
+            style={{ borderRadius: '0px' }}
           >
             Submit a link
           </a>
@@ -49,7 +49,7 @@ const Layout = ({ children }) => {
         </>
       )}
 
-      {isAuth() && isAuth().role === "admin" && (
+      {isAuth() && isAuth().role === 'admin' && (
         <li className="nav-item ml-auto">
           <Link href="/admin" passHref>
             <a className="nav-link text-dark">{isAuth().name}</a>
@@ -57,7 +57,7 @@ const Layout = ({ children }) => {
         </li>
       )}
 
-      {isAuth() && isAuth().role === "subscriber" && (
+      {isAuth() && isAuth().role === 'subscriber' && (
         <li className="nav-item ml-auto">
           <Link href="/user" passHref>
             <a className="nav-link text-dark">{isAuth().name}</a>
